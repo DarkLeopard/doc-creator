@@ -1,0 +1,9 @@
+.number-input-wrapper-fix > * {
+  width: 100%;
+
+  ::ng-deep input {
+    width: 100%;
+    font-size: 1rem !important;
+    padding: 0.25rem !important;
+  }
+}

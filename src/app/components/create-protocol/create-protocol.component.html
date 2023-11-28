@@ -1,0 +1,159 @@
+<form [formGroup]="form">
+  <div class="inner-wrapper">
+    <div class="field grid">
+      <label class="col-fixed col-2">Номер протокола</label>
+      <div class="col-10 number-input-wrapper-fix">
+        <p-inputNumber styleClass="w-full" formControlName="id"/>
+      </div>
+    </div>
+    <div class="field grid">
+      <label class="col-fixed col-2">Дата протокола</label>
+      <div class="col-10">
+        <p-calendar styleClass="w-full" formControlName="date" dateFormat="dd.mm.yy"></p-calendar>
+      </div>
+    </div>
+    <div class="field grid">
+      <label class="col-fixed col-2">Заказчик</label>
+      <div class="col-10">
+        <p-dropdown formControlName="client"
+                    styleClass="w-full"
+                    [options]="clients"
+                    [editable]="true"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="field grid">
+      <label class="col-fixed col-2">Дата поступления</label>
+      <div class="col-10">
+        <p-calendar styleClass="w-full" formControlName="arrivalDate" dateFormat="dd.mm.yy"></p-calendar>
+      </div>
+    </div>
+    <div class="field grid">
+      <label class="col-fixed col-2">Состояние</label>
+      <div class="col-10">
+        <p-dropdown formControlName="state"
+                    styleClass="w-full"
+                    [options]="states"
+                    [editable]="true"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="field grid">
+      <label class="col-fixed col-2">Дата проведения</label>
+      <div class="col-10">
+        <p-calendar styleClass="w-full" formControlName="examineDate" dateFormat="dd.mm.yy"></p-calendar>
+      </div>
+    </div>
+    <div class="field grid">
+      <label class="col-fixed col-2">Давление</label>
+      <div class="col-10 number-input-wrapper-fix">
+        <p-inputNumber styleClass="w-full" formControlName="pressure"/>
+      </div>
+    </div>
+    <div class="field grid">
+      <label class="col-fixed col-2">Давление</label>
+      <div class="col-10 number-input-wrapper-fix">
+        <p-inputNumber styleClass="w-full"
+                       formControlName="pressure"
+                       mode="decimal"
+                       [minFractionDigits]="1"
+                       [showButtons]="true"/>
+      </div>
+    </div>
+    <div class="field grid">
+      <label class="col-fixed col-2">Температура</label>
+      <div class="col-10 number-input-wrapper-fix">
+        <p-inputNumber styleClass="w-full"
+                       formControlName="temperature"
+                       mode="decimal"
+                       [minFractionDigits]="1"
+                       [showButtons]="true"/>
+      </div>
+    </div>
+    <div class="field grid">
+      <label class="col-fixed col-2">Влажность</label>
+      <div class="col-10 number-input-wrapper-fix">
+        <p-inputNumber styleClass="w-full" formControlName="humidity"/>
+      </div>
+    </div>
+  </div>
+  <p-table [value]="samples" (onEditComplete)="onEditComplete()" [tableStyle]="{ 'min-width': '50rem' }" editMode="row">
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-end">
+        <p-button label="Добавить образец" (onClick)="addSample()"></p-button>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="w-3rem">№</th>
+        <th class="w-9rem">Номер образца</th>
+        <th class="w-5rem">X<sub>1</sub></th>
+        <th class="w-5rem">X<sub>2</sub></th>
+        <th class="w-5rem">X<sub>ср</sub></th>
+        <th class="w-5rem">Повторяемость</th>
+        <th class="w-5rem">Предел повторяемости</th>
+        <th class="w-3rem"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-sample let-i='rowIndex'>
+      <tr style="height: 70px">
+        <td class="w-3rem max-w-3rem">{{ i + 1 }}</td>
+        <td class="w-9rem max-w-9rem" [pEditableColumn]="sample.id">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-inputMask mask="9999" styleClass="text-base p-1 w-full"
+                           [formControl]="getSamplesFCByIndex(i, 'id')"></p-inputMask>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{sample.id}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td class="w-5rem max-w-5rem" [pEditableColumn]="sample.sample1">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <div class="number-input-wrapper-fix">
+                <p-inputNumber styleClass="w-full" [formControl]="getSamplesFCByIndex(i, 'sample1')"/>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{sample.sample1}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td class="w-5rem max-w-5rem" [pEditableColumn]="sample.sample2">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <div class="number-input-wrapper-fix">
+                <p-inputNumber styleClass="w-full" [formControl]="getSamplesFCByIndex(i, 'sample2')"/>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{sample.sample2}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td class="w-5rem max-w-5rem">{{ sample.average }}</td>
+        <td class="w-5rem max-w-5rem">{{ sample.difference }}</td>
+        <td class="w-5rem max-w-5rem" [pEditableColumn]="sample.r">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <div class="number-input-wrapper-fix">
+                <p-inputNumber styleClass="w-full" [formControl]="getSamplesFCByIndex(i, 'r')"/>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{sample.r}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td class="w-3rem">
+          <div class="flex align-items-center justify-content-center gap-2">
+            <p-button icon="pi pi-trash" (onClick)="deleteSample(i)"></p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-button label="Создать" (onClick)="submit()"></p-button>
+</form>

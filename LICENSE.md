@@ -1,2 +1,2 @@
 
-Copyright (C) 2023 Leo
+Copyright (C) 2023 Barabanov Sergey Konstantinovich
