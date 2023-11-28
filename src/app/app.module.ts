@@ -13,9 +13,10 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import {TableModule} from 'primeng/table';
 import {InputMaskModule} from 'primeng/inputmask';
 import {RippleModule} from 'primeng/ripple';
+import { SampleTableComponent } from './components/sample-table/sample-table.component';
 
 @NgModule({
-  declarations: [AppComponent, CreateProtocolComponent],
+  declarations: [AppComponent, CreateProtocolComponent, SampleTableComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

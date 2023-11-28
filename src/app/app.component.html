@@ -1,3 +1,25 @@
-<p-button label="Create Protocol" (onClick)="openCreateModal()"></p-button>
-
-<p-table [value]="protocols"></p-table>
+<p-table [value]="protocols">
+  <ng-template pTemplate="caption">
+      <div class="flex justify-content-end">
+        <p-button label="Создать протокол" (onClick)="openCreateModal()"></p-button>
+      </div>
+    </ng-template>
+  <ng-template pTemplate="header">
+      <tr>
+        <th class="w-3rem">№</th>
+        <th class="w-5rem">Номер протокола</th>
+        <th class="w-5rem">Заказчик</th>
+        <th class="w-5rem">Дата протокола</th>
+        <th class="w-5rem">Дата поступления</th>
+        <th class="w-5rem">Дата проведения</th>
+        <th class="w-5rem">Состояние</th>
+        <th class="w-5rem">Число образцов</th>
+        <th class="w-5rem">Давление</th>
+        <th class="w-5rem">Температура</th>
+        <th class="w-5rem">Влажность</th>
+        <th class="w-5rem">Исполнитель 1</th>
+        <th class="w-5rem">Исполнитель 2</th>
+        <th class="w-3rem"></th>
+      </tr>
+    </ng-template>
+</p-table>
