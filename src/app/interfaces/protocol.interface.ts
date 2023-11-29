@@ -1,4 +1,4 @@
-import {SampleInterface} from './sample.interface';
+import {SampleInterface, PrintSampleInterface} from './sample.interface';
 import {ClientEnum} from './client.enum';
 import {SampleStateEnum} from './sample-state.enum';
 
@@ -16,4 +16,8 @@ export interface ProtocolInterface {
   humidity: number;
   executor1: string;
   executor2: string;
+}
+
+export interface PrintProtocolInterface extends ProtocolInterface {
+  samples: PrintSampleInterface[];
 }

@@ -11,8 +11,7 @@
         <p-button styleClass="m-1" label="Очистить браузер" (onClick)="clearLS()"></p-button>
       </div>
       <div class="flex justify-content-between">
-        <p-button styleClass="m-1" label="Импорт шаблона Word" (onClick)="importWord()"></p-button>
-        <p-button styleClass="m-1" label="Экспорт Word" (onClick)="exportWord()"></p-button>
+        <p-fileUpload #wordImportBtn styleClass="m-1" mode="basic" accept=".docx" (onSelect)="importWord($event)" chooseLabel="Импорт шаблона Word"></p-fileUpload>
       </div>
       <div class="flex justify-content-between">
         <p-button styleClass="m-1" label="Очистить" (onClick)="clearSystem()"></p-button>
@@ -68,6 +67,7 @@
       <td class="w-5rem max-w-5rem">{{ sample.executor2 }}</td>
       <td class="w-12rem max-w-12rem">
         <div class="flex align-items-center justify-content-center gap-2">
+          <p-button icon="pi pi-print" (onClick)="exportWord(sample)"></p-button>
           <p-button icon="pi pi-pencil" (onClick)="openEditModal(sample)"></p-button>
           <p-button icon="pi pi-trash" (onClick)="deleteProtocol(sample)"></p-button>
         </div>

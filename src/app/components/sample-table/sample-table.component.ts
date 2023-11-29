@@ -59,6 +59,7 @@ export class SampleTableComponent implements OnInit {
     this.samples = this.samplesFA.controls.map((form) => {
       return {
         id: form.controls.id.value,
+        name: form.controls.name.value,
         sample1: form.controls.sample1.value,
         sample2: form.controls.sample2.value,
         average: form.controls.average.value,
@@ -71,6 +72,7 @@ export class SampleTableComponent implements OnInit {
   private createSampleFormGroup(sample?: SampleInterface, calcDestroyObs?: Observable<void>): FormGroup<SampleForm> {
     const formGroup = new FormGroup<SampleForm>({
       id: new FormControl<string>(sample?.id ?? '0000', {nonNullable: true}),
+      name: new FormControl<string>(sample?.name ?? '', {nonNullable: true}),
       sample1: new FormControl<number>(sample?.sample1 ?? 0, {nonNullable: true}),
       sample2: new FormControl<number>(sample?.sample2 ?? 0, {nonNullable: true}),
       average: new FormControl<number>(sample?.average ?? 0, {nonNullable: true}),

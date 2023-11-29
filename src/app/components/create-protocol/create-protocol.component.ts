@@ -1,13 +1,13 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ClientEnum} from '../../interfaces/client.enum';
-import {SampleInterface} from '../../interfaces/sample.interface';
 import {SampleStateEnum} from '../../interfaces/sample-state.enum';
 import {Unsubscriber} from '../../services/unsubscriber.service';
 import {takeUntil} from 'rxjs';
 import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {ProtocolInterface} from '../../interfaces/protocol.interface';
 import {SampleForm} from './sample-form-interface';
+import {SampleInterface} from '../../interfaces/sample.interface';
 
 interface CreateProtocolForm {
   id: FormControl<number>;
@@ -50,6 +50,7 @@ export class CreateProtocolComponent implements OnInit {
   ];
 
   editMode: boolean = false;
+  samples: SampleInterface[] = []; // for edit
 
   constructor(
     private readonly dialogRef: DynamicDialogRef,
@@ -70,9 +71,12 @@ export class CreateProtocolComponent implements OnInit {
         date: new Date(this.dialogConfig.data.date),
         arrivalDate: new Date(this.dialogConfig.data.arrivalDate),
         examineDate: new Date(this.dialogConfig.data.examineDate),
-      }
+      };
 
       this.form.patchValue(data);
+
+      // fill samples
+      this.samples = data.samples;
     }
 
     this.form.controls.samples.valueChanges

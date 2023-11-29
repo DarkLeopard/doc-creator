@@ -10,6 +10,7 @@
     <tr *ngIf="samples.length > 0">
       <th class="w-3rem">№</th>
       <th class="w-9rem">Номер образца</th>
+      <th class="w-9rem">Название образца</th>
       <th class="w-5rem">X<sub>1</sub></th>
       <th class="w-5rem">X<sub>2</sub></th>
       <th class="w-5rem">X<sub>ср</sub></th>
@@ -29,6 +30,16 @@
           </ng-template>
           <ng-template pTemplate="output">
             {{sample.id}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td class="w-9rem max-w-9rem" [pEditableColumn]="sample.name">
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" class="text-base w-full p-1" [formControl]="getSamplesFCByIndex(i, 'name')"/>
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{sample.name}}
           </ng-template>
         </p-cellEditor>
       </td>
@@ -79,6 +90,7 @@
     <tr *ngIf="!canEdit">
       <td class="w-3rem max-w-3rem">{{ i + 1 }}</td>
       <td class="w-9rem max-w-9rem" [pEditableColumn]="sample.id">{{sample.id}}</td>
+      <td class="w-9rem max-w-9rem" [pEditableColumn]="sample.name">{{sample.name}}</td>
       <td class="w-5rem max-w-5rem" [pEditableColumn]="sample.sample1">{{sample.sample1}}</td>
       <td class="w-5rem max-w-5rem" [pEditableColumn]="sample.sample2">{{sample.sample2}}</td>
       <td class="w-5rem max-w-5rem">{{ sample.average }}</td>

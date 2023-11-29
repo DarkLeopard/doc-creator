@@ -90,7 +90,7 @@
       </div>
     </div>
   </div>
-  <app-sample-table [canEdit]="true" [samplesFA]="form.controls.samples"></app-sample-table>
+  <app-sample-table [canEdit]="true" [samplesFA]="form.controls.samples" [samples]="samples"></app-sample-table>
   <div class="flex justify-content-end">
     <p-button styleClass="mt-3" [label]="editMode ? 'Сохранить' : 'Создать'" (onClick)="submit()"></p-button>
   </div>
