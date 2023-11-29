@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {FormArray, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ClientEnum} from '../../interfaces/client.enum';
 import {SampleInterface} from '../../interfaces/sample.interface';
 import {SampleStateEnum} from '../../interfaces/sample-state.enum';
@@ -29,7 +29,6 @@ interface CreateProtocolForm {
   selector: 'app-create-protocol',
   templateUrl: './create-protocol.component.html',
   styleUrl: './create-protocol.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [Unsubscriber],
 })
 export class CreateProtocolComponent implements OnInit {
@@ -50,6 +49,8 @@ export class CreateProtocolComponent implements OnInit {
     SampleStateEnum.State4,
   ];
 
+  editMode: boolean = false;
+
   constructor(
     private readonly dialogRef: DynamicDialogRef,
     private readonly dialogConfig: DynamicDialogConfig<ProtocolInterface>,
@@ -60,6 +61,9 @@ export class CreateProtocolComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.dialogConfig.data) {
+      this.editMode = true;
+      this.form.controls.id.disable();
+
       // adapter
       const data = {
         ...this.dialogConfig.data,
@@ -67,6 +71,7 @@ export class CreateProtocolComponent implements OnInit {
         arrivalDate: new Date(this.dialogConfig.data.arrivalDate),
         examineDate: new Date(this.dialogConfig.data.examineDate),
       }
+
       this.form.patchValue(data);
     }
 
@@ -80,12 +85,17 @@ export class CreateProtocolComponent implements OnInit {
   }
 
   submit() {
+    if (this.form.invalid) {
+      this.form.controls.id.markAsDirty();
+      return;
+    }
+
     this.dialogRef.close(this.form.value);
   }
 
   private createFormGroup(): FormGroup<CreateProtocolForm> {
     return new FormGroup<CreateProtocolForm>({
-      id: new FormControl<number>(0, {nonNullable: true}),
+      id: new FormControl<number>(0, {nonNullable: true, validators: Validators.min(1)}),
       date: new FormControl<Date>(new Date(), {nonNullable: true}),
       client: new FormControl<ClientEnum>(ClientEnum.Client1, {nonNullable: true}),
       arrivalDate: new FormControl<Date>(new Date(), {nonNullable: true}),

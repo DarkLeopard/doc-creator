@@ -1,6 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup} from '@angular/forms';
-import {takeUntil} from 'rxjs';
+import {Observable, takeUntil} from 'rxjs';
 import {Unsubscriber} from '../../services/unsubscriber.service';
 import {SampleForm} from '../create-protocol/sample-form-interface';
 import {SampleInterface} from '../../interfaces/sample.interface';
@@ -11,15 +11,23 @@ import {SampleInterface} from '../../interfaces/sample.interface';
   styleUrl: './sample-table.component.scss',
   providers: [Unsubscriber],
 })
-export class SampleTableComponent {
+export class SampleTableComponent implements OnInit {
   @Input() samplesFA: FormArray<FormGroup<SampleForm>> = new FormArray<FormGroup<SampleForm>>([]);
+  @Input() samples: SampleInterface[] = [];
   @Input() canEdit: boolean = false;
 
-  samples: SampleInterface[] = [];
 
   constructor(
     private readonly unsubscriber: Unsubscriber,
   ) {
+  }
+
+  ngOnInit() {
+    if (this.samplesFA.length === 0 && this.samples.length > 0) {
+      this.samples.forEach((sample) => {
+        this.samplesFA.push(this.createSampleFormGroup(sample, this.unsubscriber.destroy$));
+      });
+    }
   }
 
 
@@ -33,13 +41,9 @@ export class SampleTableComponent {
   }
 
   addSample() {
-    const formGroup = this.createSampleFormGroup();
+    this.samplesFA.push(this.createSampleFormGroup(undefined, this.unsubscriber.destroy$));
 
-    if (formGroup) {
-      this.samplesFA.push(formGroup);
-
-      this.setSamplesFromFA();
-    }
+    this.setSamplesFromFA();
   }
 
   onEditComplete() {
@@ -64,26 +68,28 @@ export class SampleTableComponent {
     });
   }
 
-  private createSampleFormGroup(): FormGroup<SampleForm> | undefined {
+  private createSampleFormGroup(sample?: SampleInterface, calcDestroyObs?: Observable<void>): FormGroup<SampleForm> {
     const formGroup = new FormGroup<SampleForm>({
-      id: new FormControl<string>('0000', {nonNullable: true}),
-      sample1: new FormControl<number>(0, {nonNullable: true}),
-      sample2: new FormControl<number>(0, {nonNullable: true}),
-      average: new FormControl<number>(0, {nonNullable: true}),
-      difference: new FormControl<number>(0, {nonNullable: true}),
-      r: new FormControl<number>(0, {nonNullable: true}),
+      id: new FormControl<string>(sample?.id ?? '0000', {nonNullable: true}),
+      sample1: new FormControl<number>(sample?.sample1 ?? 0, {nonNullable: true}),
+      sample2: new FormControl<number>(sample?.sample2 ?? 0, {nonNullable: true}),
+      average: new FormControl<number>(sample?.average ?? 0, {nonNullable: true}),
+      difference: new FormControl<number>(sample?.difference ?? 0, {nonNullable: true}),
+      r: new FormControl<number>(sample?.r ?? 0, {nonNullable: true}),
     });
 
-    formGroup.valueChanges
-      .pipe(
-        takeUntil(this.unsubscriber.destroy$),
-      )
-      .subscribe((value) => {
-        if (value.sample1 !== undefined && value.sample2 !== undefined) {
-          formGroup.controls.average.setValue((value.sample1 + value.sample2) / 2, {emitEvent: false});
-          formGroup.controls.difference.setValue(value.sample1 - value.sample2, {emitEvent: false});
-        }
-      });
+    if (calcDestroyObs) {
+      formGroup.valueChanges
+        .pipe(
+          takeUntil(calcDestroyObs),
+        )
+        .subscribe((value) => {
+          if (value.sample1 !== undefined && value.sample2 !== undefined) {
+            formGroup.controls.average.setValue((value.sample1 + value.sample2) / 2, {emitEvent: false});
+            formGroup.controls.difference.setValue(value.sample1 - value.sample2, {emitEvent: false});
+          }
+        });
+    }
 
     return formGroup;
   }

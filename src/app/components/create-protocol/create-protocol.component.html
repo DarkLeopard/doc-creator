@@ -3,7 +3,7 @@
     <div class="field grid">
       <label class="col-fixed col-2">Номер протокола</label>
       <div class="col-10 number-input-wrapper-fix">
-        <p-inputNumber styleClass="w-full" formControlName="id"/>
+        <p-inputNumber styleClass="w-full" formControlName="id"></p-inputNumber>
       </div>
     </div>
     <div class="field grid">
@@ -77,9 +77,21 @@
         <p-inputNumber styleClass="w-full" formControlName="humidity"/>
       </div>
     </div>
+    <div class="field grid">
+      <label class="col-fixed col-2">Исполнитель 1</label>
+      <div class="col-10">
+        <input pInputText class="w-full text-base p-1" formControlName="executor1"/>
+      </div>
+    </div>
+    <div class="field grid">
+      <label class="col-fixed col-2">Исполнитель 2</label>
+      <div class="col-10">
+        <input pInputText class="w-full text-base p-1" formControlName="executor2"/>
+      </div>
+    </div>
   </div>
   <app-sample-table [canEdit]="true" [samplesFA]="form.controls.samples"></app-sample-table>
   <div class="flex justify-content-end">
-    <p-button styleClass="mt-3" label="Создать" (onClick)="submit()"></p-button>
+    <p-button styleClass="mt-3" [label]="editMode ? 'Сохранить' : 'Создать'" (onClick)="submit()"></p-button>
   </div>
 </form>

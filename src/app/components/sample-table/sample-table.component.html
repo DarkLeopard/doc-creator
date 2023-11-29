@@ -1,7 +1,7 @@
-<p class="p-text-secondary">Если при редактировании образца после клика на значение оно не редактируется, то нужно
+<p *ngIf="canEdit" class="p-text-secondary">Если при редактировании образца после клика на значение оно не редактируется, то нужно
   кликнуть вне таблицы 1 раз. Баг фреймворка.</p>
 <p-table [value]="samples" (onEditComplete)="onEditComplete()" [tableStyle]="{ 'min-width': '50rem' }">
-  <ng-template pTemplate="caption">
+  <ng-template pTemplate="caption" *ngIf="canEdit">
     <div class="flex align-items-end">
       <p-button label="Добавить образец" (onClick)="addSample()"></p-button>
     </div>
