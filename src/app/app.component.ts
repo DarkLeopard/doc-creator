@@ -45,15 +45,18 @@ export class AppComponent {
   }
 
   saveLS() {
-    // TODO
+    localStorage.setItem('db', JSON.stringify(this.protocols));
   }
 
   loadLS() {
-    // TODO
+    const db = localStorage.getItem('db');
+    if (db) {
+      this.protocols = JSON.parse(db);
+    }
   }
 
   clearLS() {
-    // TODO
+    localStorage.clear();
   }
 
   importWord() {
