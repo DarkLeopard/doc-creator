@@ -2,8 +2,8 @@
   кликнуть вне таблицы 1 раз. Баг фреймворка.</p>
 <p-table [value]="samples" (onEditComplete)="onEditComplete()" [tableStyle]="{ 'min-width': '50rem' }">
   <ng-template pTemplate="caption" *ngIf="canEdit">
-    <div class="flex align-items-end">
-      <p-button label="Вставить из буффера обмена" (onClick)="addFromBuffer()"></p-button>
+    <div class="flex justify-content-end">
+      <p-button styleClass="mr-3" label="Вставить из буффера обмена" (onClick)="addFromBuffer()"></p-button>
       <p-button label="Добавить образец" (onClick)="addSample()"></p-button>
     </div>
   </ng-template>
