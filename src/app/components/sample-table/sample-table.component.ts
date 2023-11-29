@@ -30,6 +30,27 @@ export class SampleTableComponent implements OnInit {
     }
   }
 
+  addFromBuffer() {
+    navigator.clipboard.readText()
+      .then((text) => {
+        const arr = text.split('\t');
+        if (arr.length === 7) {
+          const sample: SampleInterface = {
+            id: arr[0],
+            name: arr[1],
+            sample1: +arr[2],
+            sample2: +arr[3],
+            average: +arr[4],
+            difference: +arr[5],
+            r: +arr[6],
+          }
+          this.addSample(sample);
+        }
+      })
+      .catch(err => {
+        console.error('Failed to read clipboard data:', err);
+      });
+  }
 
   getSamplesFCByIndex(index: number): FormGroup<SampleForm>;
   getSamplesFCByIndex(index: number, control: keyof SampleForm): FormControl;
@@ -40,8 +61,8 @@ export class SampleTableComponent implements OnInit {
     return this.samplesFA.at(index);
   }
 
-  addSample() {
-    this.samplesFA.push(this.createSampleFormGroup(undefined, this.unsubscriber.destroy$));
+  addSample(sample?: SampleInterface) {
+    this.samplesFA.push(this.createSampleFormGroup(sample, this.unsubscriber.destroy$));
 
     this.setSamplesFromFA();
   }
