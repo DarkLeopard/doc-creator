@@ -14,6 +14,7 @@ import {TableModule} from 'primeng/table';
 import {InputMaskModule} from 'primeng/inputmask';
 import {RippleModule} from 'primeng/ripple';
 import { SampleTableComponent } from './components/sample-table/sample-table.component';
+import {FileUploadModule} from 'primeng/fileupload';
 
 @NgModule({
   declarations: [AppComponent, CreateProtocolComponent, SampleTableComponent],
@@ -30,6 +31,7 @@ import { SampleTableComponent } from './components/sample-table/sample-table.com
     TableModule,
     InputMaskModule,
     RippleModule,
+    FileUploadModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

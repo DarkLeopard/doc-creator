@@ -1,7 +1,23 @@
 <p-table [value]="protocols" dataKey="id">
   <ng-template pTemplate="caption">
-    <div class="flex justify-content-end">
-      <p-button label="Создать протокол" (onClick)="openCreateModal()"></p-button>
+    <div class="flex justify-content-between">
+      <div class="flex justify-content-between">
+        <p-fileUpload #jsonImportBtn styleClass="m-1" mode="basic" accept=".json" (onSelect)="importJSON($event)" chooseLabel="Импорт JSON"></p-fileUpload>
+        <p-button styleClass="m-1" label="Экспорт JSON" (onClick)="exportJSON()"></p-button>
+      </div>
+      <div class="flex justify-content-between">
+        <p-button styleClass="m-1" label="Сохранить в браузер" (onClick)="saveLS()"></p-button>
+        <p-button styleClass="m-1" label="Загрузить из браузера" (onClick)="loadLS()"></p-button>
+        <p-button styleClass="m-1" label="Очистить браузер" (onClick)="clearLS()"></p-button>
+      </div>
+      <div class="flex justify-content-between">
+        <p-button styleClass="m-1" label="Импорт шаблона Word" (onClick)="importWord()"></p-button>
+        <p-button styleClass="m-1" label="Экспорт Word" (onClick)="exportWord()"></p-button>
+      </div>
+      <div class="flex justify-content-between">
+        <p-button styleClass="m-1" label="Очистить" (onClick)="clearSystem()"></p-button>
+        <p-button styleClass="m-1" label="Создать протокол" (onClick)="openCreateModal()"></p-button>
+      </div>
     </div>
   </ng-template>
   <ng-template pTemplate="header">

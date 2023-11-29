@@ -1,7 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {DialogService, DynamicDialogConfig} from 'primeng/dynamicdialog';
 import {CreateProtocolComponent} from './components/create-protocol/create-protocol.component';
 import {ProtocolInterface} from './interfaces/protocol.interface';
+import {ExportService} from './services/export.service';
+import {FileSelectEvent, FileUpload} from 'primeng/fileupload';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +12,56 @@ import {ProtocolInterface} from './interfaces/protocol.interface';
   providers: [DialogService],
 })
 export class AppComponent {
+  @ViewChild('jsonImportBtn') jsonImportBtn!: FileUpload;
+
   protocols: ProtocolInterface[] = [];
 
   constructor(
     private readonly dialogService: DialogService,
+    private readonly exportService: ExportService,
   ) {
+  }
+
+  exportJSON() {
+    this.exportService.exportJSON(this.protocols);
+  }
+
+  importJSON(event: FileSelectEvent) {
+    const fileReader = new FileReader();
+    fileReader.onload = (fileLoadedEvent) => {
+      if (fileLoadedEvent.target) {
+        const textFromFileLoaded = fileLoadedEvent.target.result;
+        const json = JSON.parse(textFromFileLoaded as any);
+
+        this.protocols = json;
+        this.jsonImportBtn.clear()
+      }
+    };
+    fileReader.readAsText(event.currentFiles[0], "UTF-8");
+  }
+
+  clearSystem() {
+    this.protocols = [];
+  }
+
+  saveLS() {
+    // TODO
+  }
+
+  loadLS() {
+    // TODO
+  }
+
+  clearLS() {
+    // TODO
+  }
+
+  importWord() {
+    // TODO
+  }
+
+  exportWord() {
+    // TODO
   }
 
   openEditModal(protocol: ProtocolInterface) {
